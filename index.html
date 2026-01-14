@@ -4136,14 +4136,10 @@
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 <script src="script.js"></script>
-<script type="module">
-  import { PhantomWalletAdapter, SolflareWalletAdapter, CoinbaseWalletAdapter } 
-    from "https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-wallets@latest/dist/index.js";
-
+<script>
   const connectBtn = document.getElementById("connect-wallet");
   const walletMenu = document.getElementById("wallet-menu");
 
-  // Show wallet options when main button is clicked
   connectBtn.addEventListener("click", () => {
     walletMenu.style.display = "block";
   });
@@ -4153,29 +4149,43 @@
     if (!walletName) return;
 
     try {
-      let wallet;
-      switch (walletName) {
-        case "phantom":
-          wallet = new PhantomWalletAdapter();
-          break;
-        case "solflare":
-          wallet = new SolflareWalletAdapter();
-          break;
-        case "coinbase":
-          wallet = new CoinbaseWalletAdapter();
-          break;
+      // PHANTOM
+      if (walletName === "phantom") {
+        if (window.solana?.isPhantom) {
+          const resp = await window.solana.connect();
+          alert("Connected Phantom: " + resp.publicKey.toString());
+        } else {
+          window.location.href = "https://phantom.app/download";
+        }
       }
 
-      await wallet.connect();
-      alert(`Connected to ${wallet.name}!`);
+      // SOLFLARE
+      if (walletName === "solflare") {
+        if (window.solflare?.isSolflare) {
+          const resp = await window.solflare.connect();
+          alert("Connected Solflare");
+        } else {
+          window.location.href = "https://solflare.com/download";
+        }
+      }
+
+      // COINBASE WALLET (Solana)
+      if (walletName === "coinbase") {
+        if (window.coinbaseSolana) {
+          const resp = await window.coinbaseSolana.connect();
+          alert("Connected Coinbase Wallet");
+        } else {
+          window.location.href = "https://www.coinbase.com/wallet/downloads";
+        }
+      }
+
       walletMenu.style.display = "none";
 
     } catch (err) {
       console.error(err);
-      alert(`Failed to connect to ${walletName}`);
+      alert("Connection failed");
     }
   });
 </script>
-
 
 </body></html>
