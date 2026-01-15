@@ -4133,11 +4133,14 @@
 <link rel="stylesheet" href="https://unpkg.com/@solana/wallet-adapter-ui@latest/styles.css" />
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-
 <script src="https://unpkg.com/@solana/wallet-adapter-base@latest/lib/index.iife.min.js"></script>
 <script src="https://unpkg.com/@solana/wallet-adapter-wallets@latest/lib/index.iife.min.js"></script>
 <script src="https://unpkg.com/@solana/wallet-adapter-ui@latest/lib/index.iife.min.js"></script>
-
+<script>
+  console.log("Base:", window.solanaWalletAdapterBase);
+  console.log("Wallets:", window.solanaWalletAdapterWallets);
+  console.log("UI:", window.solanaWalletAdapterUi);
+</script>
 <script>
   const network = "mainnet-beta";
 
