@@ -4131,16 +4131,17 @@
         </div>
     </div>
 
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-<script src="https://unpkg.com/@solana/wallet-adapter-base@latest/lib/index.iife.min.js"></script>
-<script src="https://unpkg.com/@solana/wallet-adapter-wallets@latest/lib/index.iife.min.js"></script>
-<script src="https://unpkg.com/@solana/wallet-adapter-ui@latest/lib/index.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-base@0.9.23/lib/index.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-wallets@0.19.20/lib/index.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-ui@0.9.35/lib/index.iife.min.js"></script>
+
 <script>
   console.log("Base:", window.solanaWalletAdapterBase);
   console.log("Wallets:", window.solanaWalletAdapterWallets);
   console.log("UI:", window.solanaWalletAdapterUi);
-</script>
-<script>
+
   const network = "mainnet-beta";
 
   const wallets = [
